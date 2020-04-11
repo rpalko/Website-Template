@@ -28,12 +28,12 @@ function watch() {
   gulp.watch('*.html').on('change', reload);
   gulp.watch('js/**/*.js').on('change', reload);
   gulp.watch('js/**/*.js', gulp.series(lint));
-  gulp.watch('index.html', gulp.parallel(copyHtml);
-  gulp.watch('#.html').on('change', reload);
+  gulp.watch('index.html', gulp.parallel(copyHtml));
+  gulp.watch('*.html').on('change', reload);
   gulp.watch('img/*', gulp.parallel (copyImages));
   gulp.watch('img/*').on('change', reload);
   browserSync.init({
-    server: './',
+    server: './dist',
   })
 }
 
@@ -52,7 +52,7 @@ function jasmine() {
 }
 
 function copyHtml(cb) {
-  gulp.src(index.html)
+  gulp.src('index.html')
       .pipe(gulp.dest('dist'));
   cb();
 }
@@ -63,4 +63,5 @@ function copyImages() {
 }
 
 exports.styles = styles;
+exports.copyHtml = copyHtml;
 exports.default = series(styles, lint, jasmine, watch);
