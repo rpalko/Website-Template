@@ -5,6 +5,7 @@ const autoprefixer = require('gulp-autoprefixer');
 const browserSync = require('browser-sync').create();
 const reload = browserSync.reload;
 const eslint = require('gulp-eslint');
+const jasmineBrowser = require('gulp-jasmine-browser');
 
 
 function styles(cb) {
@@ -21,7 +22,7 @@ function styles(cb) {
   cb();
 }
 
-function watch(cb) {
+function watch() {
   gulp.watch('sass/**/*.scss', gulp.parallel(styles));
   gulp.watch('sass/**/*.scss') .on('change', reload);
   gulp.watch('*.html').on('change', reload);
@@ -29,8 +30,7 @@ function watch(cb) {
   gulp.watch('js/**/*.js', gulp.series(lint));
   browserSync.init({
     server: './',
-  });
-  cb();
+  })
 }
 
 function lint(cb) {
@@ -41,5 +41,11 @@ function lint(cb) {
   cb();
 }
 
+function jasmine() {
+  return gulp.src(['js/**/*.js', 'spec/**/*._spec.js'])
+  .pipe(jasmineBrowser.specRunner())
+  .pipe(jasmineBrowser.server({port:8888}));
+}
+
 exports.styles = styles;
-exports.default = series(styles, lint, watch);
+exports.default = series(styles, lint, jasmine, watch);
