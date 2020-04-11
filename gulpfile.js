@@ -17,7 +17,7 @@ function styles(cb) {
             browserlist: ['last 2 versions'],
           })
       )
-      .pipe(gulp.dest('./css'))
+      .pipe(gulp.dest('dist/css'))
       .pipe(browserSync.stream());
   cb();
 }
@@ -28,6 +28,10 @@ function watch() {
   gulp.watch('*.html').on('change', reload);
   gulp.watch('js/**/*.js').on('change', reload);
   gulp.watch('js/**/*.js', gulp.series(lint));
+  gulp.watch('index.html', gulp.parallel(copyHtml);
+  gulp.watch('#.html').on('change', reload);
+  gulp.watch('img/*', gulp.parallel (copyImages));
+  gulp.watch('img/*').on('change', reload);
   browserSync.init({
     server: './',
   })
@@ -45,6 +49,17 @@ function jasmine() {
   return gulp.src(['js/**/*.js', 'spec/**/*._spec.js'])
   .pipe(jasmineBrowser.specRunner())
   .pipe(jasmineBrowser.server({port:8888}));
+}
+
+function copyHtml(cb) {
+  gulp.src(index.html)
+      .pipe(gulp.dest('dist'));
+  cb();
+}
+
+function copyImages() {
+  return gulp.src('img/*')
+      .pipe(gulp.dest ('dist/img'));
 }
 
 exports.styles = styles;
