@@ -6,11 +6,12 @@ const browserSync = require('browser-sync').create();
 const reload = browserSync.reload;
 const eslint = require('gulp-eslint');
 const jasmineBrowser = require('gulp-jasmine-browser');
+const concat = require('gulp-concat');
 
 
 function styles(cb) {
   gulp.src('sass/**/*.scss')
-      .pipe(sass())
+      .pipe(sass({outputStyle:'compressed'}))
       .on('error', sass.logError)
       .pipe(
           autoprefixer({
@@ -62,6 +63,19 @@ function copyImages() {
       .pipe(gulp.dest ('dist/img'));
 }
 
+function scripts () {
+  return gulp.src('js/**/*.js')
+  .pipe(concat('all.js'))
+  .pipe(gulp.dest('dist/js'));
+}
+
+function scriptsDist () {
+  return gulp.src('js/**/*.js')
+  .pipe(concat('all.js'))
+  .pipe(gulp.dest('dist/js'));
+}
+
+exports.scripts = scripts;
 exports.styles = styles;
 exports.copyHtml = copyHtml;
 exports.default = series(styles, lint, jasmine, watch);
