@@ -10,6 +10,8 @@ const concat = require('gulp-concat');
 const uglify = require('gulp-uglify');
 const babel = require('gulp-babel');
 const sourcemaps = require('gulp-sourcemaps');
+const imagemin = require('gulp-imagemin');
+const imageminPngquant = ('imagemin-pngquant');
 
 function styles(cb) {
   gulp.src('sass/**/*.scss')
@@ -62,6 +64,10 @@ function copyHtml(cb) {
 
 function copyImages() {
   return gulp.src('img/*')
+      .pipe(imagemin({
+        progressive: true,
+        use: imageminPngquant(),
+      }))
       .pipe(gulp.dest('dist/img'));
 }
 
