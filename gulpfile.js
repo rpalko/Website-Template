@@ -9,6 +9,7 @@ const jasmineBrowser = require('gulp-jasmine-browser');
 const concat = require('gulp-concat');
 const uglify = require('gulp-uglify');
 const babel = require('gulp-babel');
+const sourcemaps = require('gulp-sourcemaps');
 
 function styles(cb) {
   gulp.src('sass/**/*.scss')
@@ -73,6 +74,7 @@ function scripts() {
 
 function scriptsDist() {
   return gulp.src('js/**/*.js')
+      .pipe(sourcemaps.init())
       .pipe(babel())
       .pipe(concat('all.js'))
       .pipe(uglify())
