@@ -7,11 +7,11 @@ const reload = browserSync.reload;
 const eslint = require('gulp-eslint');
 const jasmineBrowser = require('gulp-jasmine-browser');
 const concat = require('gulp-concat');
-
+const uglify = require('gulp-uglify');
 
 function styles(cb) {
   gulp.src('sass/**/*.scss')
-      .pipe(sass({outputStyle:'compressed'}))
+      .pipe(sass({outputStyle: 'compressed'}))
       .on('error', sass.logError)
       .pipe(
           autoprefixer({
@@ -31,11 +31,11 @@ function watch() {
   gulp.watch('js/**/*.js', gulp.series(lint));
   gulp.watch('index.html', gulp.parallel(copyHtml));
   gulp.watch('*.html').on('change', reload);
-  gulp.watch('img/*', gulp.parallel (copyImages));
+  gulp.watch('img/*', gulp.parallel(copyImages));
   gulp.watch('img/*').on('change', reload);
   browserSync.init({
     server: './dist',
-  })
+  });
 }
 
 function lint(cb) {
@@ -48,8 +48,8 @@ function lint(cb) {
 
 function jasmine() {
   return gulp.src(['js/**/*.js', 'spec/**/*._spec.js'])
-  .pipe(jasmineBrowser.specRunner())
-  .pipe(jasmineBrowser.server({port:8888}));
+      .pipe(jasmineBrowser.specRunner())
+      .pipe(jasmineBrowser.server({port: 8888}));
 }
 
 function copyHtml(cb) {
@@ -60,19 +60,20 @@ function copyHtml(cb) {
 
 function copyImages() {
   return gulp.src('img/*')
-      .pipe(gulp.dest ('dist/img'));
+      .pipe(gulp.dest('dist/img'));
 }
 
-function scripts () {
+function scripts() {
   return gulp.src('js/**/*.js')
-  .pipe(concat('all.js'))
-  .pipe(gulp.dest('dist/js'));
+      .pipe(concat('all.js'))
+      .pipe(gulp.dest('dist/js'));
 }
 
-function scriptsDist () {
+function scriptsDist() {
   return gulp.src('js/**/*.js')
-  .pipe(concat('all.js'))
-  .pipe(gulp.dest('dist/js'));
+      .pipe(concat('all.js'))
+      .pipe(uglify())
+      .pipe(gulp.dest('dist/js'));
 }
 
 exports.scripts = scripts;
