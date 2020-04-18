@@ -8,6 +8,7 @@ const eslint = require('gulp-eslint');
 const jasmineBrowser = require('gulp-jasmine-browser');
 const concat = require('gulp-concat');
 const uglify = require('gulp-uglify');
+const babel = require('gulp-babel');
 
 function styles(cb) {
   gulp.src('sass/**/*.scss')
@@ -65,12 +66,14 @@ function copyImages() {
 
 function scripts() {
   return gulp.src('js/**/*.js')
+      .pipe(babel())
       .pipe(concat('all.js'))
       .pipe(gulp.dest('dist/js'));
 }
 
 function scriptsDist() {
   return gulp.src('js/**/*.js')
+      .pipe(babel())
       .pipe(concat('all.js'))
       .pipe(uglify())
       .pipe(gulp.dest('dist/js'));
@@ -81,6 +84,7 @@ function dist(cb) {
   cb();
 }
 
+exports.babel = babel;
 exports.dist = dist;
 exports.scripts = scripts;
 exports.scriptsDist = scriptsDist;
