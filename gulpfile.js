@@ -76,7 +76,15 @@ function scriptsDist() {
       .pipe(gulp.dest('dist/js'));
 }
 
+function dist(cb) {
+  series(copyHtml, copyImages, styles, lint, scriptsDist);
+  cb();
+}
+
+exports.dist = dist;
 exports.scripts = scripts;
+exports.scriptsDist = scriptsDist;
 exports.styles = styles;
 exports.copyHtml = copyHtml;
+exports.copyImages = copyImages;
 exports.default = series(styles, lint, jasmine, watch);
